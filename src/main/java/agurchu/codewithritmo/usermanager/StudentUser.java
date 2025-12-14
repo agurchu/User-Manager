@@ -1,5 +1,7 @@
 package agurchu.codewithritmo.usermanager;
 
+import java.util.Objects;
+
 public class StudentUser extends User {
     private String username;
     private String email;
@@ -7,49 +9,62 @@ public class StudentUser extends User {
     private final String role = "Student";
 
     public StudentUser() {
-        // TODO: initialise default values
+        username = "StudentUser";
+        email = "student@example.com";
+        age = 18;
+
     }
 
     public StudentUser(String username, String email, int age) {
-        // TODO: initialise with supplied values
+        this.username = username;
+        this.email = email;
+        this.age =age;
     }
 
     @Override
     public String getUsername() {
-        // TODO: return username
-        return null;
+
+        return username;
     }
 
     @Override
     public void setUsername(String username) {
-        // TODO: set username
+        this.username = username;
     }
 
     @Override
     public String getEmail() {
-        // TODO: return email
-        return null;
+        return email;
     }
 
     @Override
     public void setEmail(String email) {
-        // TODO: set email
+        this.email=email;
     }
 
     @Override
     public int getAge() {
-        // TODO: return age
-        return 0;
+        return age;
     }
 
     @Override
     public void setAge(int age) {
-        // TODO: set age (must be >= 0)
+        this.age = Math.max(age,1);
     }
 
     @Override
     public String getRole() {
-        // TODO: return fixed role "Student"
-        return null;
+        return role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof StudentUser that)) return false;
+        return age == that.age && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(role, that.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email, age, role);
     }
 }

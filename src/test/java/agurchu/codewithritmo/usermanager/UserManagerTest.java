@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public class UserManagerTest {
     @Test void addUserIncreasesSize() {
-        // TODO:
+        UserManager m = new UserManager();
+        m.addUser("newbie", "n@temp.com", 19, "student");
+        assertEquals(4, m.getUsers().size());
     }
 
     @Test void removeUserDecreasesSize() {
