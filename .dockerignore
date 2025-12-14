@@ -1,0 +1,9 @@
+target/
+out/
+*.iml
+.idea/
+.git/
+.github/
+Dockerfile
+Makefile
+README.md
