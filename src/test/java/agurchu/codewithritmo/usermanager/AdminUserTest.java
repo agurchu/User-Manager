@@ -12,16 +12,27 @@ public class AdminUserTest {
     }
 
     @Test void parameterizedConstructor() {
-        // TODO: use parameterized Constructor
+        AdminUser u = new AdminUser("root", "root@system.org", 28);
+        assertEquals("root", u.getUsername());
+        assertEquals("root@system.org", u.getEmail());
+        assertEquals(28, u.getAge());
+        assertEquals("Admin", u.getRole());
     }
 
     @Test void setters() {
         AdminUser u = new AdminUser();
-        // TODO: test setUsername, setEmail & setAge
+        u.setUsername("super");
+        u.setEmail("super@domain.com");
+        u.setAge(32);
+        assertEquals("super", u.getUsername());
+        assertEquals("super@domain.com", u.getEmail());
+        assertEquals(32, u.getAge());
 
     }
 
     @Test void negativeAge() {
-        // TODO: test setAge with negative value
+        AdminUser u = new AdminUser();
+        u.setAge(-10);
+        assertEquals(1, u.getAge());
     }
 }
