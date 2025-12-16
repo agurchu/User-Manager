@@ -120,8 +120,12 @@ public class UserManager {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
-
+private boolean isInteractive(){return System.console() != null;}
     private int readInt(String prompt) {
+        if (!isInteractive()){
+            System.out.println("\nRunning in non-interactive mode - skipping input.");
+            return 5;
+        }
         System.out.print(prompt);
         while (!scanner.hasNextInt()) {
             System.out.println("Please enter a number.");

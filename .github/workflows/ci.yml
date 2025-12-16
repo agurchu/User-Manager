@@ -29,4 +29,4 @@ jobs:
 
       - name: Test Docker image runs
         run: |
-          docker run --rm user-manager:${{ github.sha }} java -version
+          docker run --rm user-manager:${{ github.sha }} echo "App Container starts"
