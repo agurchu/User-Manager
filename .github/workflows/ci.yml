@@ -6,6 +6,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -24,9 +27,20 @@ jobs:
       - name: Run tests
         run: mvn -B test
 
-      - name: Build Docker image
-        run: docker build -t user-manager:${{ github.sha }} .
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test Docker image runs
-        run: |
-          docker run --rm user-manager:${{ github.sha }} echo "App Container starts"
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+            context: .
+            push: true
+            tags: ghcr.io/${{ github.repository_owner }}/user-manager:latest
+            # Optional: tag with commit SHA too
+            # tags: |
+            #   ghcr.io/${{ github.repository_owner }}/user-manager:latest
+            #   ghcr.io/${{ github.repository_owner }}/user-manager:${{ github.sha }}
