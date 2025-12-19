@@ -59,6 +59,7 @@ ci-docker:
 	@echo "Repo: $(GITHUB_REPOSITORY)"
 	@echo "Actor: $(GITHUB_ACTOR)"
 	@echo "SHA: $(GITHUB_SHA)"
-	$(MAKE) docker-login GHCR_TOKEN=$(GITHUB_TOKEN) GITHUB_REPO=$(GITHUB_REPOSITORY) GITHUB_ACTOR=$(GITHUB_ACTOR)
-	$(MAKE) docker-build
-	$(MAKE) docker-push
+	env GHCR_TOKEN=$(GITHUB_TOKEN) \
+		GITHUB_REPO=$(GITHUB_REPOSITORY) \
+		GITHUB_ACTOR=$(GITHUB_ACTOR) \
+		$(MAKE) docker-login docker-build docker-push
