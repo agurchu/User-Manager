@@ -1,4 +1,4 @@
-GITHUB_REPO ?= agurchu/User-Manager    # CHANGE THIS to your actual repo!
+GITHUB_REPO ?= agurchu/user-manager    # CHANGE THIS to your actual repo!
 GITHUB_ACTOR ?= $(shell whoami)
 .PHONY: help build test run clean docker-build docker-run
 help:
