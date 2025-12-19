@@ -55,11 +55,9 @@ docker-run:
 	docker run --rm -it user-manager:latest
 
 ci-docker:
-    # In GitHub Actions, these env vars are auto-set
 	@echo "Repo: $(GITHUB_REPOSITORY)"
 	@echo "Actor: $(GITHUB_ACTOR)"
-	@echo "SHA: $(GITHUB_SHA)"
-	env GHCR_TOKEN=$(GITHUB_TOKEN) \
-		GITHUB_REPO=$(GITHUB_REPOSITORY) \
-		GITHUB_ACTOR=$(GITHUB_ACTOR) \
-		$(MAKE) docker-login docker-build docker-push
+	$(MAKE) docker-login docker-build docker-push
+	env GHCR_TOKEN=$(GITHUB_TOKEN)
+		GITHUB_REPO=$(GITHUB_REPOSITORY)
+		GITHUB_ACTOR=$(GITHUB_ACTOR)

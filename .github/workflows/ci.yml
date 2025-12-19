@@ -25,9 +25,6 @@ jobs:
       - name: Test
         run: mvn -B clean test
 
-#      - name: Build and Test
-#        run: mvn -B clean test
-
       - name: Login to GHCR and Push Docker Image
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
