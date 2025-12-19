@@ -1,7 +1,6 @@
+GITHUB_REPO ?= agurchu/User-Manager    # CHANGE THIS to your actual repo!
+GITHUB_ACTOR ?= $(shell whoami)
 .PHONY: help build test run clean docker-build docker-run
-set-ci-env:
-    $(eval GITHUB_REPO := $(shell echo $$GITHUB_REPOSITORY))
-    $(eval GITHUB_ACTOR := $(shell echo $$GITHUB_ACTOR))
 help:
 	@echo "User Manager Makefile"
 	@echo ""
@@ -33,14 +32,20 @@ clean:
 docker-build:
 	@echo "Building Docker image..."
 	docker build -t user-manager:latest .
-	docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:latest
-	#docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:$(GIT_SHA)
 
+	#docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:$(GIT_SHA)
+docker-tag:
+	@echo "Tagging image for GHCR..."
+	docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:latest
 docker-login:
 	@echo "Logging in to GHCR..."
+	@if [ -z "$(GHCR_TOKEN)" ]; then \
+		echo "ERROR: GHCR_TOKEN not set. Use: make docker-login GHCR_TOKEN=your-token"; \
+		exit 1; \
+	fi
 	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GITHUB_ACTOR) --password-stdin
 
-docker-push: docker-build
+docker-push: docker-tag
 	@echo "Pushing Docker image to GHCR..."
 	docker push ghcr.io/$(GITHUB_REPO)/user-manager:latest
 
@@ -49,5 +54,11 @@ docker-run:
 	@echo "Running Docker container..."
 	docker run --rm -it user-manager:latest
 
-ci-docker: docker-login docker-push
-	@echo "Docker image published successfully!"
+ci-docker:
+    # In GitHub Actions, these env vars are auto-set
+	@echo "Repo: $(GITHUB_REPOSITORY)"
+	@echo "Actor: $(GITHUB_ACTOR)"
+	@echo "SHA: $(GITHUB_SHA)"
+	$(MAKE) docker-login GHCR_TOKEN=$$GITHUB_TOKEN GITHUB_REPO=$$GITHUB_REPOSITORY GITHUB_ACTOR=$$GITHUB_ACTOR GIT_SHA=$$GITHUB_SHA
+	$(MAKE) docker-build
+	$(MAKE) docker-push
