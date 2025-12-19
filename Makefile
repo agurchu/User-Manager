@@ -1,5 +1,7 @@
 .PHONY: help build test run clean docker-build docker-run
-
+set-ci-env:
+    $(eval GITHUB_REPO := $(shell echo $$GITHUB_REPOSITORY))
+    $(eval GITHUB_ACTOR := $(shell echo $$GITHUB_ACTOR))
 help:
 	@echo "User Manager Makefile"
 	@echo ""
