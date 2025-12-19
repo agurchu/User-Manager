@@ -43,7 +43,7 @@ docker-login:
 docker-push: docker-build
 	@echo "Pushing Docker image to GHCR..."
 	docker push ghcr.io/$(GITHUB_REPO)/user-manager:latest
-	docker push ghcr.io/$(GITHUB_REPO)/user-manager:$(GIT_SHA)
+
 
 docker-run:
 	@echo "Running Docker container..."
