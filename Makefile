@@ -31,7 +31,21 @@ clean:
 docker-build:
 	@echo "Building Docker image..."
 	docker build -t user-manager:latest .
+	docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:latest
+	#docker tag user-manager:latest ghcr.io/$(GITHUB_REPO)/user-manager:$(GIT_SHA)
+
+docker-login:
+	@echo "Logging in to GHCR..."
+	@echo $(GHCR_TOKEN) | docker login ghcr.io -u $(GITHUB_ACTOR) --password-stdin
+
+docker-push: docker-build
+	@echo "Pushing Docker image to GHCR..."
+	docker push ghcr.io/$(GITHUB_REPO)/user-manager:latest
+	docker push ghcr.io/$(GITHUB_REPO)/user-manager:$(GIT_SHA)
 
 docker-run:
 	@echo "Running Docker container..."
 	docker run --rm -it user-manager:latest
+
+ci-docker: docker-login docker-push
+	@echo "Docker image published successfully!"
