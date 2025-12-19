@@ -1,4 +1,4 @@
-GITHUB_REPO ?= agurchu/user-manager    # CHANGE THIS to your actual repo!
+GITHUB_REPO ?= agurchu/User-Manager    # CHANGE THIS to your actual repo!
 GITHUB_ACTOR ?= $(shell whoami)
 .PHONY: help build test run clean docker-build docker-run
 help:
@@ -59,6 +59,6 @@ ci-docker:
 	@echo "Repo: $(GITHUB_REPOSITORY)"
 	@echo "Actor: $(GITHUB_ACTOR)"
 	@echo "SHA: $(GITHUB_SHA)"
-	$(MAKE) docker-login GHCR_TOKEN=$$GITHUB_TOKEN GITHUB_REPO=$$GITHUB_REPOSITORY GITHUB_ACTOR=$$GITHUB_ACTOR GIT_SHA=$$GITHUB_SHA
+	$(MAKE) docker-login GHCR_TOKEN=$(GITHUB_TOKEN) GITHUB_REPO=$(GITHUB_REPOSITORY) GITHUB_ACTOR=$(GITHUB_ACTOR)
 	$(MAKE) docker-build
 	$(MAKE) docker-push
